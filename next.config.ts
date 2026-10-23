@@ -6,10 +6,8 @@ const nextConfig: NextConfig = {
     dangerouslyAllowSVG: true,
     contentDispositionType: "inline",
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-    localPatterns: [
-      { pathname: "/images/**", search: "" },
-      { pathname: "/images/**", search: "?v=3" },
-    ],
+    // Omit `search` so `?v=` cache-bust from lib/images.ts stays in sync without config edits.
+    localPatterns: [{ pathname: "/images/**" }],
   },
 };
 

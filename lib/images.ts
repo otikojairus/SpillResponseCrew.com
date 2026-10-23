@@ -21,11 +21,9 @@ export type ImageKey =
 
 type Photo = { src: string; alt: string; caption: string; credit: string };
 
-/** Bump when WebP files change so Next/image and browsers drop stale optimized cache. */
-const IMAGE_VERSION = "4";
-
+/** Paths must not include search params — Next.js 16 `images.localPatterns` blocks unknown `?v=` on `next/image`. */
 function imageSrc(filename: string): string {
-  return `/images/${filename}?v=${IMAGE_VERSION}`;
+  return `/images/${filename}`;
 }
 
 const photos: Record<ImageKey, Photo> = {

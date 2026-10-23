@@ -1169,27 +1169,27 @@ __turbopack_context__.s([
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$pages$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/lib/pages.ts [app-rsc] (ecmascript)");
 ;
-/** Bump when WebP files change so Next/image and browsers drop stale optimized cache. */ const IMAGE_VERSION = "3";
+/** Bump when WebP files change so Next/image and browsers drop stale optimized cache. */ const IMAGE_VERSION = "4";
 function imageSrc(filename) {
     return `/images/${filename}?v=${IMAGE_VERSION}`;
 }
 const photos = {
     "hero-home": {
         src: imageSrc("spill-hero-home.webp"),
-        alt: "Environmental responders in hazard suits inspecting an outdoor spill site",
-        caption: "Emergency containment—berms, absorbents, and vacuum recovery on site.",
+        alt: "Rainbow oil sheen spread across an asphalt spill site",
+        caption: "Oil and fuel spills—contain sheen, recover product, and protect drains.",
         credit: "Pexels"
     },
     "hero-service": {
         src: imageSrc("spill-hero-service.webp"),
-        alt: "Industrial crew cleaning a large floor after a liquid release",
-        caption: "Chemical and fuel releases need compatible PPE and absorbents.",
+        alt: "Responders in protective gear cleaning petroleum from a shoreline",
+        caption: "On-water and shoreline oil response with booms and recovery gear.",
         credit: "Pexels"
     },
     "hero-local": {
         src: imageSrc("spill-hero-local.webp"),
-        alt: "Industrial worker in safety gear handling equipment at a local job site",
-        caption: "Metro teams know local catch basins, bylaws, and disposal routes.",
+        alt: "Gasoline and fuel rainbow sheen on pavement near a local site",
+        caption: "Local teams coordinate regulators, disposal, and receptor protection.",
         credit: "Pexels"
     },
     "emergency-spill": {
@@ -1266,7 +1266,7 @@ const photos = {
     },
     "gasoline-spill": {
         src: imageSrc("spill-gasoline-spill.webp"),
-        alt: "Gasoline spill creating a rainbow sheen on asphalt",
+        alt: "Dark petroleum liquid pooling on an industrial surface",
         caption: "Gasoline spill cleanup at forecourts and fleet yards.",
         credit: "Pexels"
     },

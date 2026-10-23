@@ -1096,9 +1096,8 @@ __turbopack_context__.s([
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$pages$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/lib/pages.ts [app-rsc] (ecmascript)");
 ;
-/** Bump when WebP files change so Next/image and browsers drop stale optimized cache. */ const IMAGE_VERSION = "4";
-function imageSrc(filename) {
-    return `/images/${filename}?v=${IMAGE_VERSION}`;
+/** Paths must not include search params — Next.js 16 `images.localPatterns` blocks unknown `?v=` on `next/image`. */ function imageSrc(filename) {
+    return `/images/${filename}`;
 }
 const photos = {
     "hero-home": {
