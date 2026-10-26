@@ -1,10 +1,34 @@
 #!/usr/bin/env npx tsx
+/**
+ * Automated checks for programmatic SEO standards (uniqueness, linking, on-page, technical).
+ * Manual pre-launch: Rich Results Test, PageSpeed ≥70 mobile per template, touch-target audit.
+ */
 import { wordCount } from "../lib/content-utils";
 import { factsForPage } from "../lib/location-facts";
-import { nationalServiceImageKeys } from "../lib/images";
-import { cityLocationEntries } from "../lib/locations";
+import { getPhoto, nationalServiceImageKeys, type ImageKey } from "../lib/images";
 import { faqsFor, h1For, introFor, internalLinksFor, isCityPageSlug, pageSeoMeta, sectionsFor } from "../lib/seo-content";
 import { CITY_PAGES, PAGES, PILLAR_SLUG, type SeoPage, serviceBaseSlug } from "../lib/pages";
+
+const FORBIDDEN_ANCHORS = [/click here/i, /read more/i, /learn more/i];
+const IMAGE_KEYS: ImageKey[] = [
+  "hero-home",
+  "hero-service",
+  "hero-local",
+  "emergency-spill",
+  "hazardous-waste",
+  "oil-spill",
+  "industrial-chemical",
+  "hazmat-waste",
+  "soil-remediation",
+  "fuel-spill",
+  "industrial-spill",
+  "chemical-spill",
+  "environmental",
+  "mercury-spill",
+  "hydraulic-oil",
+  "gasoline-spill",
+  "diesel-spill",
+];
 
 function metroHubSlug(area: string) {
   return CITY_PAGES.find((p) => p.area === area && p.slug.startsWith(`${PILLAR_SLUG}-`))?.slug;
@@ -56,8 +80,22 @@ markLink("home", "locations");
 for (const p of PAGES.filter((p) => p.kind === "city")) markLink("locations", p.slug);
 markLink("home", PILLAR_SLUG);
 
-function countCityLinks(page: SeoPage) {
-  return internalLinksFor(page).filter((l) => isCityPageSlug(l.href.replace(/^\//, ""))).length;
+function cityLinksForService(page: SeoPage, base: string) {
+  return internalLinksFor(page).filter((l) => {
+    const slug = l.href.replace(/^\//, "");
+    return isCityPageSlug(slug) && serviceBaseSlug(slug) === base;
+  });
+}
+
+function isEmergencyStyleNational(page: SeoPage) {
+  if (page.kind !== "national") return false;
+  const base = serviceBaseSlug(page.slug);
+  return (
+    base.includes("emergency") ||
+    base.includes("hazmat") ||
+    base.includes("fuel") ||
+    base.includes("industrial")
+  );
 }
 
 for (const page of PAGES) {
@@ -106,18 +144,38 @@ for (const page of PAGES) {
     }
   }
 
-  if (page.slug === PILLAR_SLUG) {
-    const metros = cityLocationEntries().length;
-    const cityLinks = countCityLinks(page);
-    if (cityLinks < metros) errors.push(`Pillar must link every metro hub (has ${cityLinks}/${metros})`);
-  }
-
-  if (page.kind === "national" && page.slug !== PILLAR_SLUG) {
-    const cities = countCityLinks(page);
-    if (cities < 2 || cities > 5) {
-      errors.push(`National page needs 2–5 city links: ${page.slug} (${cities})`);
+  if (page.kind === "national") {
+    const base = serviceBaseSlug(page.slug);
+    const expectedCities = CITY_PAGES.filter((p) => serviceBaseSlug(p.slug) === base).length;
+    const cityLinks = cityLinksForService(page, base).length;
+    if (cityLinks < expectedCities) {
+      errors.push(`National service must link all city pages (${cityLinks}/${expectedCities}): ${page.slug}`);
+    }
+    if (page.slug !== PILLAR_SLUG) {
+      const hasPillar = internalLinksFor(page).some((l) => l.href === `/${PILLAR_SLUG}`);
+      if (!hasPillar) errors.push(`National page missing pillar link: ${page.slug}`);
+    }
+    if (isEmergencyStyleNational(page) && page.slug !== PILLAR_SLUG) {
+      const metroExtras = cityLinksForService(page, base).length;
+      if (metroExtras < 2) {
+        errors.push(`Emergency-style national needs city coverage: ${page.slug}`);
+      }
     }
   }
+
+  for (const link of internalLinksFor(page)) {
+    if (FORBIDDEN_ANCHORS.some((re) => re.test(link.anchor))) {
+      errors.push(`Weak anchor on ${page.slug}: "${link.anchor}"`);
+    }
+    if (link.anchor.trim().length < 8) {
+      errors.push(`Anchor too short on ${page.slug}: "${link.anchor}"`);
+    }
+  }
+}
+
+for (const key of IMAGE_KEYS) {
+  const photo = getPhoto(key);
+  if (!photo.alt.trim()) errors.push(`Missing image alt: ${key}`);
 }
 
 const serviceKeys = nationalServiceImageKeys();

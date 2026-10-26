@@ -77,14 +77,14 @@ export function SiteFooter() {
         <div className="site-footer__cols">
           <div>
             <p className="site-footer__label">Urgent</p>
-            <Link href="/emergency-tire-repair">Emergency</Link>
-            <Link href="/24-hour-tire-repair">24 hour</Link>
+            <Link href="/emergency-spill-response">Emergency spill response</Link>
+            <Link href="/hazmat-cleanup">Hazmat cleanup</Link>
           </div>
           <div>
             <p className="site-footer__label">Cities</p>
             <Link href="/locations">All metros</Link>
-            <Link href="/tire-repair-toronto">Toronto</Link>
-            <Link href="/tire-repair-vancouver">Vancouver</Link>
+            <Link href="/environmental-spill-response-toronto">Environmental spill response Toronto</Link>
+            <Link href="/environmental-spill-response-vancouver">Environmental spill response Vancouver</Link>
           </div>
         </div>
         <a className="site-footer__call btn btn-beacon btn-block" href={`tel:${PHONE_E164}`}>

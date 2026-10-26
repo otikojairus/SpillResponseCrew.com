@@ -44,6 +44,13 @@ export default function HomePage() {
         data={[
           {
             "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Home", item: absoluteUrl() },
+            ],
+          },
+          {
+            "@context": "https://schema.org",
             "@type": "Organization",
             name: SITE_NAME,
             url: absoluteUrl(),

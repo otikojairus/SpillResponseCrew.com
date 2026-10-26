@@ -225,7 +225,9 @@ export default async function SeoPage({ params }: Props) {
 
         <aside className="side-panel">
           <h2>Call dispatch</h2>
-          <p>Share your location, tire size, photos, and whether you are on a highway shoulder.</p>
+          <p>
+            Share your site address, product type, estimated volume, photos, SDS if you have it, and the nearest storm drain or waterway.
+          </p>
           <a className="btn btn-beacon btn-block" href={`tel:${PHONE_E164}`}>
             <span className="btn-label">Call</span>
             <span className="btn-value">{PHONE_DISPLAY}</span>

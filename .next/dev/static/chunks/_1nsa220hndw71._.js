@@ -375,16 +375,16 @@ function SiteFooter() {
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                                        href: "/emergency-tire-repair",
-                                        children: "Emergency"
+                                        href: "/emergency-spill-response",
+                                        children: "Emergency spill response"
                                     }, void 0, false, {
                                         fileName: "[project]/components/site-chrome.tsx",
                                         lineNumber: 80,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                                        href: "/24-hour-tire-repair",
-                                        children: "24 hour"
+                                        href: "/hazmat-cleanup",
+                                        children: "Hazmat cleanup"
                                     }, void 0, false, {
                                         fileName: "[project]/components/site-chrome.tsx",
                                         lineNumber: 81,
@@ -415,16 +415,16 @@ function SiteFooter() {
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                                        href: "/tire-repair-toronto",
-                                        children: "Toronto"
+                                        href: "/environmental-spill-response-toronto",
+                                        children: "Environmental spill response Toronto"
                                     }, void 0, false, {
                                         fileName: "[project]/components/site-chrome.tsx",
                                         lineNumber: 86,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                                        href: "/tire-repair-vancouver",
-                                        children: "Vancouver"
+                                        href: "/environmental-spill-response-vancouver",
+                                        children: "Environmental spill response Vancouver"
                                     }, void 0, false, {
                                         fileName: "[project]/components/site-chrome.tsx",
                                         lineNumber: 87,
@@ -946,8 +946,8 @@ const NATIONAL_PAGES = PAGES.filter(_c = (p)=>p.kind === "national");
 _c1 = NATIONAL_PAGES;
 const CITY_PAGES = PAGES.filter(_c2 = (p)=>p.kind === "city");
 _c3 = CITY_PAGES;
-const PHONE_DISPLAY_DEFAULT = "1-888-XXX-XXXX";
-const PHONE_E164_DEFAULT = "+1888XXXXXXX";
+const PHONE_DISPLAY_DEFAULT = "1-888-496-0133";
+const PHONE_E164_DEFAULT = "+18884960133";
 function isPlaceholderPhone(value) {
     return !value || /x{2,}/i.test(value) || value.includes("XXX");
 }

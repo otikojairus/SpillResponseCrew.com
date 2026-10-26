@@ -1,6 +1,4 @@
 import { hashSlug } from "./content-utils";
-import { cityLocationEntries } from "./locations";
-import { pageLinkLabel } from "./link-labels";
 import {
   breadcrumbLabels,
   faqHeadingFor,
@@ -13,6 +11,7 @@ import {
   type FaqItem,
 } from "./page-copy";
 import { metaDescriptionFor, metaTitleFor } from "./seo-meta";
+import { seoAnchorCityToService, seoAnchorFor } from "./seo-anchors";
 import {
   CITY_PAGES,
   NATIONAL_PAGES,
@@ -59,9 +58,17 @@ function metroLinksFromPages(pages: SeoPage[]): InternalLink[] {
     const name = locationName(p);
     if (byArea.has(name)) continue;
     const hub = metroHubFor(p.area) ?? p;
-    byArea.set(name, { href: `/${hub.slug}`, anchor: name });
+    byArea.set(name, { href: `/${hub.slug}`, anchor: seoAnchorFor(hub) });
   }
   return [...byArea.values()].sort((a, b) => a.anchor.localeCompare(b.anchor));
+}
+
+function cityLinksForNationalService(page: SeoPage): InternalLink[] {
+  const base = serviceBaseSlug(page.slug);
+  return CITY_PAGES
+    .filter((p) => serviceBaseSlug(p.slug) === base)
+    .sort((a, b) => locationName(a).localeCompare(locationName(b)))
+    .map((p) => ({ href: `/${p.slug}`, anchor: seoAnchorFor(p) }));
 }
 
 function pickMetroLinks(page: SeoPage, min: number, max: number, pool?: SeoPage[]): InternalLink[] {
@@ -85,18 +92,6 @@ function pushLinks(links: InternalLink[], seen: Set<string>, batch: InternalLink
   }
 }
 
-function isPriorityNational(page: SeoPage) {
-  if (page.kind !== "national") return false;
-  const base = serviceBaseSlug(page.slug);
-  return (
-    base === PILLAR_SLUG ||
-    base.includes("emergency") ||
-    base.includes("hazmat") ||
-    base.includes("fuel") ||
-    base.includes("industrial")
-  );
-}
-
 export function internalLinksFor(page: SeoPage): InternalLink[] {
   const { locations, services } = internalLinkGroupsFor(page);
   return [...locations, ...services];
@@ -117,21 +112,17 @@ export function internalLinkGroupsFor(page: SeoPage): { locations: InternalLink[
     const href = `/${target.slug}`;
     if (href === `/${page.slug}` || seenSvc.has(href)) return;
     seenSvc.add(href);
-    services.push({ href, anchor: anchor ?? pageLinkLabel(target) });
+    const defaultAnchor =
+      page.kind === "city" ? seoAnchorCityToService(page, target) : seoAnchorFor(target);
+    services.push({ href, anchor: anchor ?? defaultAnchor });
   };
 
   if (page.kind === "national") {
     if (page.slug !== PILLAR_SLUG) {
-      addService(pillar, pageLinkLabel(pillar));
+      addService(pillar, seoAnchorFor(pillar));
     }
 
-    if (base === PILLAR_SLUG) {
-      pushLinks(locations, seenLoc, cityLocationEntries().map((c) => ({ href: c.href, anchor: c.name })));
-    } else if (isPriorityNational(page)) {
-      pushLinks(locations, seenLoc, pickMetroLinks(page, 2, 5));
-    } else {
-      pushLinks(locations, seenLoc, pickMetroLinks(page, 2, 4));
-    }
+    pushLinks(locations, seenLoc, cityLinksForNationalService(page));
 
     if (emergency && page.slug !== "emergency-spill-response") addService(emergency);
     if (hazmat && page.slug !== "hazmat-cleanup") addService(hazmat);
@@ -146,9 +137,9 @@ export function internalLinkGroupsFor(page: SeoPage): { locations: InternalLink[
   if (page.kind === "city") {
     const localHub = metroHubFor(page.area);
     if (localHub && localHub.slug !== page.slug) {
-      addService(localHub, pageLinkLabel(localHub));
+      addService(localHub, seoAnchorFor(localHub));
     } else {
-      addService(pillar, pageLinkLabel(pillar));
+      addService(pillar, seoAnchorFor(pillar));
     }
 
     const localServices = CITY_PAGES.filter((p) => p.area === page.area && p.slug !== page.slug);
@@ -157,7 +148,7 @@ export function internalLinkGroupsFor(page: SeoPage): { locations: InternalLink[
       const href = `/${s.slug}`;
       if (href === `/${page.slug}` || seenSvc.has(href)) continue;
       seenSvc.add(href);
-      services.push({ href, anchor: pageLinkLabel(s) });
+      services.push({ href, anchor: seoAnchorFor(s) });
     }
 
     const serviceStart = hashSlug(page.slug) % CITY_SERVICE_SLUGS.length;
